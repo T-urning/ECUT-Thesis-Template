@@ -1052,6 +1052,7 @@
     \__ecut_make_cover_master_doctor:
     \__ecut_make_title_en:
     \__ecut_make_statesment_master_doctor:
+    \__ecut_make_authorization:
 
     \pagestyle { plain }
     \pagenumbering { Roman }
@@ -1296,11 +1297,11 @@
 \cs_new_protected:Npn \__ecut_make_statesment_master_doctor:
   {
     \__ecut_new_chapter_page:
-    \mode_leave_vertical: \skip_vertical:n { 2 \baselineskip }
-    \noindent \hfil { \zihao { -2 } \heiti 论文原创性声明 }
-    \par \skip_vertical:n { 2 \baselineskip }
+    %\mode_leave_vertical: \skip_vertical:n { 2 \baselineskip }
+    \noindent \hfil { \zihao { -2 } \songti \bfseries 独创性声明 }
+    \par \skip_vertical:n { 1 \baselineskip }
     \group_begin:
-      \zihao { 4 } \skip_set:Nn \baselineskip { 28 pt }
+      \zihao { 4 } \skip_set:Nn \baselineskip { 32 pt } % 28pt
       \tl_if_eq:NnTF \g__ecut_option_type_tl { doctor }
         {
           本人郑重声明：所呈交的学位论文，是本人在导师指导下，独立进行研究工作所
@@ -1309,47 +1310,66 @@
           中以明确方式标明。本声明的法律结果由本人承担。
         }
         {
-          本人郑重声明：所呈交的学位论文，是本人在导师指导下，独立进行研究工作所
-          取得的研究成果。除文中已经标明引用的内容外，本论文不包含任何其他个人或
-          集体已经发表或撰写过的研究成果。对本文的研究做出贡献的个人和集体，均已
-          在文中以明确方式标明。本声明的法律结果由本人承担。
+          本人声明所呈交的学位论文是本人在导师指导下进行的研究工作及取得的研究成果，尽我所知，除了文中特别加以标注和致谢的地方外，论文中不包含其他人已经发表或撰写过的研究成果，也不包含本人为获得其它教育机构的学位或证书而使用过的材料。与我一同工作的同志对本研究所做的任何贡献均已在论文中作了明确的说明并表示感谢。
         }
       \par \skip_vertical:N \baselineskip
-      \hfill 学位论文作者（签名）： \hbox_to_wd:nn { 4 cm } {}
-      \par \skip_vertical:N \baselineskip
-        \hfill 年 \qquad 月 \qquad 日
+      作者签名：\uline{ \hbox_to_wd:nn { 3 cm } {}} \hbox_to_wd:nn { 1.5 cm } {} % \hfill  \rule{3cm}{0.4pt}
+      %\par \skip_vertical:N \baselineskip
+        日期：\hbox_to_wd:nn { 2 cm } {} 年 \qquad 月 \qquad 日
     \group_end:
-    \__ecut_new_chapter_page:
+
+    \mode_leave_vertical: \skip_vertical:n { 4 \baselineskip }
+    \noindent \hfil { \zihao { -2 } \songti \bfseries 承\ 诺\ 书 }
+    \par \skip_vertical:n { 1 \baselineskip }
+    \group_begin:
+      \zihao { 4 } \skip_set:Nn \baselineskip { 32 pt } % 28pt
+      \tl_if_eq:NnTF \g__ecut_option_type_tl { doctor }
+        {
+          
+        }
+        {
+          本人郑重承诺: \par
+          我撰写的论文 “ \uline{ \hbox_to_wd:nn { 11 cm } {}} ” \\
+          是在指导教师指导下独立完成的，不存在学术不端行为。论文写作过程中不存在学位论文作假行为（购买、出售学位论文或者组织学位论文买卖的; 由他人代写、为他人代写学位论文或者组织学位论文代写的;剽窃他人作品和学术成果的;伪造数据的;有其他严重学位论文作假行为的）。我的学位论文如果存在学位论文作假行为、存在学术不端行为，愿意承担一切责任。 
+        }
+      \par 
+      \setlength\parindent{20em}承诺人：\par%\hbox_to_wd:nn { 5 cm } {} % 
+      \skip_vertical:n { 0.5 \baselineskip }
+
+      年 \qquad 月 \qquad 日
+    \group_end:
+
+    %\__ecut_new_chapter_page:
   }
 
 %%%% ---- 使用授权书 ---- %%%%
 \cs_new_protected:Npn \__ecut_make_authorization:
   {
-    \__ecut_new_chapter_page:
-    \mode_leave_vertical: \skip_vertical:N \baselineskip
+    %\__ecut_new_chapter_page:
+    \newpage
+    %\mode_leave_vertical: \skip_vertical:N \baselineskip
     \noindent \hfil
-    { \zihao { 4 } \heiti \textbf { 东华理工大学学位论文使用授权协议书 } }
-    \par \skip_vertical:n { 25 pt }
-    \skip_set:Nn \baselineskip { 22 pt }
-    本学位论文作者愿意遵守东华理工大学关于保存、使用学位论文的管理办法及规定，即：学
-    校有权保存学位论文的印刷本和电子版，并提供文献检索与阅览服务；学校可以采用影
-    印、缩印、数字化或其它复制手段保存论文；在以教学与科研服务为目的前提下，学校
-    可以在校园网内公布部分或全部内容。 \par
-    一、在本论文提交当年，同意在校园网内以及中国高等教育文献保障系统（CALIS）、
-    高校学位论文系统提供查询及前十六页浏览服务。 \par
-    二、在本论文提交 \hbox:n { \textsquare } 当年/ \hbox:n { \textsquare }一年/
-    \hbox:n { \textsquare } 两年/ \hbox:n { \textsquare }三年以后，同意在校园网
-    内允许读者在线浏览并下载全文，学校可以为存在馆际合作关系的兄弟高校用户提供文
-    献传递服务和交换服务。（保密论文解密后遵守此规定）
-    \par \skip_vertical:n { 10 pt }
-    \begin { minipage } { 20 em }
-      \skip_set:Nn \baselineskip { 22 pt }
-      论文作者（签名）： \uline { \hfill } \par
-      学 \qquad 号： \uline { \hfill } \par
-      学 \qquad 院： \uline { \hfill }
-      \par \skip_vertical:n { 15.6 pt }
-      \hfill 日期： \qquad \qquad 年 \qquad 月 \qquad 日
-    \end { minipage }
+    { \zihao { -2 } \songti \bfseries { 关于学位论文使用授权的说明 } }
+    \par \skip_vertical:n { 1 \baselineskip }
+    \group_begin:
+      \zihao { -3 } \songti \skip_set:Nn \baselineskip { 32 pt }
+      本学位论文作者完全了解东华理工大学有关保留、使用学位论文的规定：东华理工大学有权保留并向国家有关部门或机构送交论文的复印件和磁盘，允许论文被查阅和借阅，可以将学位论文的全部或部分内容编入有关数据库进行检索，可以采用影印、缩印或扫描等复制手段保存、汇编学位论文，并且本人电子文档的内容和纸质论文的内容相一致。\par
+      保密的学位论文在解密后也遵守此规定。 \par
+      
+      \par \skip_vertical:n { 2 \baselineskip }
+        
+      作者签名： \uline {  \hbox_to_wd:nn { 5 cm } {} } 
+      \par \skip_vertical:n { 1 \baselineskip }
+      日期： \qquad \qquad 年 \qquad 月 \qquad 日 \par
+      \par \skip_vertical:n { 2 \baselineskip }
+
+      导师签名： \uline {  \hbox_to_wd:nn { 5 cm } {} } 
+      \par \skip_vertical:n { 1 \baselineskip }
+      日期： \qquad \qquad 年 \qquad 月 \qquad 日 \par
+      \par \skip_vertical:n { 2 \baselineskip }
+      
+      论文答辩日期： \qquad \qquad 年 \qquad 月 \qquad 日
+    \group_end:
     \__ecut_new_chapter_page:
   }
 
