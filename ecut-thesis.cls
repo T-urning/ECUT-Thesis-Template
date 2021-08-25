@@ -162,7 +162,7 @@
         \tl_const:Nn \c__ecut_heading_tl
           { \__ecut_spread_with:nn { 硕士专业学位论文 } { \enskip } }
       }
-    \tl_set:Nn \bibname { \zihao { 4 } \textbf { 参考文献 } }
+    \tl_set:Nn \bibname {  参考文献 }
     \tl_set:Nn \bibliographytypesize { \zihao { 5 } }
   }
 
@@ -187,7 +187,9 @@
 
 \RequirePackage { tikz, pgfplots } % 绘图
 \pgfplotsset { compat = 1.17 }
+
 \RequirePackage [ normalem ] { ulem }
+\RequirePackage [ normalem ] { CJKulem }
 
 \RequirePackage { physics }
 \RequirePackage { siunitx }
@@ -220,8 +222,9 @@
 % 草稿模式下，显示边框
 
 \RequirePackage { fancyhdr }        % 页眉页脚宏包
-\tl_set:Nn \headrulewidth { \c_zero_dim }  % 页眉线宽
+\tl_set:Nn \headrulewidth { 0.5 pt }  % 页眉线宽
 \tl_set:Nn \footrulewidth { \c_zero_dim }  % 页脚线宽
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}} % 仅保留章名，去掉章节前面的数字序号
 
 \AtEndPreamble
   {
@@ -235,7 +238,7 @@
       }
     \tl_if_eq:NnT \g__ecut_option_type_tl { master }
       {
-        \tl_gset_eq:NN \g__ecut_head_odd_tl \g__ecut_info_title_tl
+        \tl_gset_eq:NN \g__ecut_head_odd_tl \leftmark
         \tl_gremove_all:Nn \g__ecut_head_odd_tl { \\ }
         \tl_gset:Nn \g__ecut_head_even_tl { 东华理工大学硕士学位论文 }
       }
@@ -332,9 +335,15 @@
       { \tocloftpagestyle { empty } }
   }
 
-\tl_set:Nn \contentsname   { 目 \qquad 录 }
-\tl_set:Nn \listfigurename { 图片索引     }
-\tl_set:Nn \listtablename  { 表格索引     }
+\tl_set:Nn \contentsname   { 目录 }
+\tl_set:Nn \listfigurename { 图目录 }
+\tl_set:Nn \listtablename  { 表目录  }
+\renewcommand{\cftfigpresnum}{图}
+\renewcommand{\cfttabpresnum}{表}
+\newlength{\mylen}
+\settowidth{\mylen}{\cftfigpresnum\cftfigaftersnum}
+\addtolength{\cftfignumwidth}{\mylen}
+\addtolength{\cfttabnumwidth}{\mylen}
 
 \tl_set:Nn \cftdot { \raisebox { 0.3 em } { \normalfont . } }
 \tl_set:Nn \cftdotsep { \c_one_int }
@@ -372,6 +381,7 @@
 \RequirePackage { subcaption }
 % 图表标题设置
 \RequirePackage [ labelsep = quad ] { caption } % 序号之后空一格写标题
+\RequirePackage { bicaption }
 % 设置表格标题字体为黑体, 设置图标题字体为宋体
 \DeclareCaptionFont { ecuttablecap  }
   { \heiti \addCJKfontfeatures { BoldFont = * } \bfseries \zihao { -4 } }
@@ -387,6 +397,9 @@
     name = 图,
     font = ecutfigurecap
   }
+
+\captionsetup[figure][bi-second]{name=Figure} %设置图的英文编号前缀
+\captionsetup[table][bi-second]{name=Table} %设置表的英文编号前缀
 
 \RequirePackage { graphicx }
 \AtEndPreamble
@@ -771,6 +784,7 @@
 \tl_new:N \g__ecut_info_secret_level_tl
 \tl_new:N \g__ecut_info_school_number_tl
 \tl_new:N \g__ecut_info_paper_number_tl
+\tl_new:N \g__ecut_info_session_tl
 \tl_new:N \g__ecut_info_category_tl
 \tl_new:N \g__ecut_info_title_tl
 \tl_new:N \g__ecut_info_title_en_tl
@@ -780,8 +794,10 @@
 \tl_new:N \g__ecut_info_school_tl
 \tl_new:N \g__ecut_info_subject_tl
 \tl_new:N \g__ecut_info_major_tl
+\tl_new:N \g__ecut_info_major_en_tl
 \tl_new:N \g__ecut_info_direction_tl
 \tl_new:N \g__ecut_info_date_tl
+\tl_new:N \g_ecut_info_advisor_tn_tl
 \clist_new:N \g__ecut_info_advisor_clist
 \clist_new:N \g__ecut_info_keywords_clist
 \clist_new:N \g__ecut_info_keywords_en_clist
@@ -793,6 +809,7 @@
     secret-level   .tl_gset:N    = \g__ecut_info_secret_level_tl,
     school-number  .tl_gset:N    = \g__ecut_info_school_number_tl,
     paper-number   .tl_gset:N    = \g__ecut_info_paper_number_tl,
+    session        .tl_gset:N    = \g__ecut_info_session_tl,
     category       .tl_gset:N    = \g__ecut_info_category_tl,
     student-number .tl_gset:N    = \g__ecut_info_student_number_tl,
     title          .tl_gset:N    = \g__ecut_info_title_tl,
@@ -802,8 +819,10 @@
     school         .tl_gset:N    = \g__ecut_info_school_tl,
     subject        .tl_gset:N    = \g__ecut_info_subject_tl,
     major          .tl_gset:N    = \g__ecut_info_major_tl,
+    major*         .tl_gset:N    = \g__ecut_info_major_en_tl,
     direction      .tl_gset:N    = \g__ecut_info_direction_tl,
     date           .tl_gset:N    = \g__ecut_info_date_tl,
+    advisor*       .tl_gset:N    = \g__ecut_info_advisor_en_tl,
     advisor        .clist_gset:N = \g__ecut_info_advisor_clist,
     keywords       .clist_gset:N = \g__ecut_info_keywords_clist,
     keywords *     .clist_gset:N = \g__ecut_info_keywords_en_clist,
@@ -898,8 +917,10 @@
   {
     \keys_define:nn { ecut / style }
       {
-        bib-style  .initial:n = author-year,
-        cite-style .initial:n = author-year
+        bib-style  .initial:n = numerical,
+        cite-style .initial:n = numerical-super
+        % bib-style  .initial:n = author-year,
+        % cite-style .initial:n = author-year
       }
   }
   {
@@ -1415,48 +1436,76 @@
     \box_use_drop:N \l__ecut_keywords_box #2 \par
   }
 
+\newcommand{\longunderline}[1]{\uline{#1\hfill\mbox{}}}
 % 生成摘要
 \cs_new_protected:Npn \__ecut_make_abstract:
   {
     % 中文摘要
     \tl_if_empty:NF \g__ecut_element_abstract_tl
       {
-        \chapter * { 摘 \qquad 要 }
-        \phantomsection
-        \clist_map_inline:nn { doctor , master }
-          {
-            \tl_if_eq:NnT \g__ecut_option_type_tl {##1}
-              { \addcontentsline { toc } { chapter } { 摘 \qquad 要 } }
-          }
-        \tl_if_eq:NnT \g__ecut_option_type_tl { bachelor }
-          { \thispagestyle { empty } }
-        \__ecut_set_baseline_skip:
+        \noindent \hfil
+        { \kaishu \zihao{3} \bfseries \uline{\uline{东华理工大学硕士学位论文中文摘要首页用纸}} } \par
+        \group_begin:
+          \kaishu \zihao{4} \setlength{\parindent}{0pt} \skip_set:Nn \baselineskip { 32 pt } 
+          毕业论文题目： \longunderline{ \quad \g__ecut_info_title_tl}  \par
+          \uline {  \quad \g__ecut_info_major_tl \quad } 专业 \uline { \quad \g__ecut_info_session_tl \quad }级硕士生姓名：\longunderline{ \qquad \g__ecut_info_author_tl } \par 
+          指导教师（姓名、职称）：\longunderline{ \quad \clist_use:Nn \g__ecut_info_advisor_clist { \quad } } \par
+        \group_end:
 
-        \file_input:V \g__ecut_element_abstract_tl
+        \group_begin:
+          \renewcommand{\cleardoublepage}{} % 消除 Abstract 章另起一页
+          \renewcommand{\clearpage}{}
+          \chapter * { 摘要 }
+          \phantomsection
+          \clist_map_inline:nn { doctor , master }
+            {
+              \tl_if_eq:NnT \g__ecut_option_type_tl {##1}
+                { \addcontentsline { toc } { chapter } { 摘要 } }
+            }
+          \tl_if_eq:NnT \g__ecut_option_type_tl { bachelor }
+            { \thispagestyle { empty } }
+          \__ecut_set_baseline_skip:
 
-        \skip_vertical:N \c__ecut_baseline_skip \par
-        \__ecut_put_keywords:nn
-          { \heiti \zihao { -4 } 关键词：\hbox:n {} }
-          { \clist_use:Nn \g__ecut_info_keywords_clist { ； } }
+          \file_input:V \g__ecut_element_abstract_tl
+
+          \skip_vertical:N \c__ecut_baseline_skip \par
+          \__ecut_put_keywords:nn
+            { \heiti \zihao { -4 } 关键词：\hbox:n {} }
+            { \clist_use:Nn \g__ecut_info_keywords_clist { ； } }
+        \group_end:
       }
+    \__ecut_new_chapter_page:
     % 英文摘要
     \tl_if_empty:NF \g__ecut_element_abstract_en_tl
       {
-        \chapter * { \textbf { ABSTRACT } }
-        \phantomsection
-        \clist_map_inline:nn { doctor , master }
-          {
-            \tl_if_eq:NnT \g__ecut_option_type_tl {##1}
-              { \addcontentsline { toc } { chapter } { ABSTRACT } }
-          }
-        \tl_if_eq:NnT \g__ecut_option_type_tl { bachelor }
-          { \thispagestyle { empty } }
-        \__ecut_set_baseline_skip:
-        \file_input:V \g__ecut_element_abstract_en_tl
-        \skip_vertical:N \c__ecut_baseline_skip \par
-        \__ecut_put_keywords:nn
-          { \bfseries \zihao { -4 } Key ~ words: ~ }
-          { \clist_use:Nn \g__ecut_info_keywords_en_clist { ; ~ } }
+        \noindent \hfil
+        { \kaishu \zihao{3} \bfseries \uline{\uline{东华理工大学硕士学位论文英文摘要首页用纸}} } \par
+        \group_begin:
+          \zihao{4} \setlength{\parindent}{0pt} \skip_set:Nn \baselineskip { 32 pt } 
+          THESIS: \quad \g__ecut_info_title_en_tl \par
+          SPECIALIZATION: \qquad \g__ecut_info_major_en_tl \par 
+          POSTGRADUATE: \qquad \g__ecut_info_author_en_tl \par
+          MENTOR: \qquad \g__ecut_info_advisor_en_tl\par
+        \group_end:
+        \group_begin:
+          \renewcommand{\cleardoublepage}{}
+          \renewcommand{\clearpage}{}
+          \chapter * { \textbf { ABSTRACT } }
+          \phantomsection
+          \clist_map_inline:nn { doctor , master }
+            {
+              \tl_if_eq:NnT \g__ecut_option_type_tl {##1}
+                { \addcontentsline { toc } { chapter } { ABSTRACT } }
+            }
+          \tl_if_eq:NnT \g__ecut_option_type_tl { bachelor }
+            { \thispagestyle { empty } }
+          \__ecut_set_baseline_skip:
+          \file_input:V \g__ecut_element_abstract_en_tl
+          \skip_vertical:N \c__ecut_baseline_skip \par
+          \__ecut_put_keywords:nn
+            { \bfseries \zihao { -4 } Key ~ words: ~ }
+            { \clist_use:Nn \g__ecut_info_keywords_en_clist { ; ~ } }
+        \group_end:
       }
     \__ecut_new_chapter_page:
   }
@@ -1479,9 +1528,10 @@
 
 \cs_new_protected:Npn \__ecut_make_back_matter_master:
   {
+    \__ecut_make_thanks:
+    \__ecut_make_achievements:
     \__ecut_make_bibliography:
     \__ecut_make_appendix:
-    \__ecut_make_thanks:
   }
 
 \cs_new_protected:Npn \__ecut_make_back_matter_bachelor:
@@ -1530,6 +1580,7 @@
           }
           {
             \__ecut_new_chapter_page:
+            %\chapter * { 参考文献 }
             \phantomsection
             \addcontentsline { toc } { chapter } { 参考文献 }
             \bool_if:NTF \g__ecut_style_bib_backend_bibtex_bool
@@ -1554,9 +1605,9 @@
   {
     \tl_if_empty:NF \g__ecut_element_achievements_tl
       {
-        \chapter * { 攻博期间发表的科研成果目录 }
-        \phantomsection
-        \addcontentsline { toc } { chapter } { 攻博期间发表的科研成果目录 }
+        \chapter * { 在攻读学位期间取得的科研成果 }
+        \phantomsection \markboth{在攻读学位期间取得的科研成果}{}
+        \addcontentsline { toc } { chapter } { 在攻读学位期间取得的科研成果 }
         \tl_if_eq:NnTF \g__ecut_style_bib_style_tl { author-year }
           {
             \begin { enumerate } [ label = {} , left = 0 pt .. 0 pt ]
@@ -1577,7 +1628,7 @@
     \tl_if_empty:NF \g__ecut_element_thanks_tl
       {
         \chapter * { 致谢 }
-        \phantomsection
+        \phantomsection \markboth{致谢}{}
         \addcontentsline { toc } { chapter } { 致谢 }
         \file_input:V \g__ecut_element_thanks_tl
       }
