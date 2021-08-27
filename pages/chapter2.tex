@@ -39,7 +39,7 @@
 \begin{figure}
   \centering
   \includegraphics[width=0.3\textwidth]{ecut_logo.jpg}
-  \caption{插图示例}
+  \bicaption{插图示例}{Example of inserting a figure}
   \label{fig:whu}
 \end{figure}
 
@@ -51,17 +51,17 @@
 
 \begin{figure}[h]
   \centering
-  \begin{subfigure}{0.2\textwidth}
+  \begin{subfigure}{0.25\textwidth}
     \includegraphics[width=\linewidth]{ecut_logo.jpg}
-    \caption{东理校徽}
+    \bicaption{东理校徽}{The logo of\  ECUT}
     \label{fig:subfig-a}
   \end{subfigure}\qquad
-  \begin{subfigure}{0.7\textwidth}
+  \begin{subfigure}{0.65\textwidth}
     \includegraphics[width=\linewidth]{ecut.png}
-    \caption{东华理工大学}
+    \bicaption{东华理工大学}{East China University of Technology}
     \label{fig:subfig-b}
   \end{subfigure}
-  \caption{多个分图的示例}
+  \bicaption{多个分图的示例}{Example of multi-subfigures}
   \label{fig:multi-image}
 \end{figure}
 
@@ -89,7 +89,7 @@
 
 \begin{table}[ht]
   \centering
-  \caption{一般三线表}
+  \bicaption{一般三线表}{A standard three-line table}
   \label{tab:2}
   \begin{tabular}{ccc}
     \toprule
@@ -107,7 +107,7 @@
 
 \begin{table}[ht]
   \centering
-  \caption{占满文字宽度的三线表}
+  \bicaption{占满文字宽度的三线表}{A three-line table with full width}
   \label{tab:3}
   \begin{tabularx}{\textwidth}{CCCC}
     \toprule
@@ -126,8 +126,10 @@
 \subsection{跨页表格}
 跨页表格常用于附录（把正文懒得放下的实验数据统统放在附录的表中）。一般使用 longtable 包提供的 longtable 环境。若要要创建占满给定宽度的跨页表格，可以使用 xltabular 包提供的 xltabular 环境，使用方法与 longtable 类似。以下是一个文字宽度的跨页表格的示例：
 
+
+
 \begin{xltabular}{\textwidth}{CCCCCCCCC}
-  \caption{文字宽度的跨页表格示例}  \\
+  \caption[文字宽度的跨页表格示例]{文字宽度的跨页表格示例\\Table~\ref{tab:longtab}\quad A table crossing two pages}\label{tab:longtab} \\
   \toprule
   1 & 0 & 5 & 1 & 2 & 3 & 4 & 5 & 6 \\
   \midrule
@@ -169,6 +171,7 @@
 \end{xltabular}
 
 
+
 \section{列表的使用}
 下面演示了创建有序及无序列表，如需其它样式，\href{https://www.latex-tutorial.com/tutorials/lists/}{LaTeX Lists} 上有更多的示例。
 
@@ -201,7 +204,7 @@
 \end{itemize}
 
 \begin{table}[b]
-  \caption{模板定义的数学环境}\label{tab:数学环境}
+  \bicaption{模板定义的数学环境}{Mathematical environments defined by the templates}\label{tab:数学环境}
   \begin{tabularx}{\textwidth}{CCCC}
     \toprule
     theorem     & definition & lemma  & corollary \\

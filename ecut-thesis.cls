@@ -225,6 +225,9 @@
 \tl_set:Nn \headrulewidth { 0.5 pt }  % 页眉线宽
 \tl_set:Nn \footrulewidth { \c_zero_dim }  % 页脚线宽
 \renewcommand{\chaptermark}[1]{\markboth{#1}{}} % 仅保留章名，去掉章节前面的数字序号
+% 页眉，页脚
+\setlength{\headheight}{15mm}
+\setlength{\footskip}{15mm}
 
 \AtEndPreamble
   {
@@ -268,22 +271,22 @@
   {
     section        =
       {
-        format     = { \heiti \zihao { 4 }       },
+        format     = { \heiti \zihao { 3 }       },
         beforeskip = { 0.5 \c__ecut_baseline_skip },
         afterskip  = { 0.5 \c__ecut_baseline_skip },
-      },  % 一级标题 黑体 4 号
+      },  % 一级标题 黑体 3 号
     subsection     =
       {
-        format     = { \heiti \zihao { -4 }      },
+        format     = { \heiti \zihao { -3 }      },
         beforeskip = { 0.5 \c__ecut_baseline_skip },
         afterskip  = { 0.5 \c__ecut_baseline_skip },
-      },  % 二级标题 黑体小 4 号
+      },  % 二级标题 黑体小 3 号
     subsubsection  =
       {
-        format     = { \heiti \zihao { -4 }      },
+        format     = { \heiti \zihao { 4 }      },
         beforeskip = { 0.5 \c__ecut_baseline_skip },
         afterskip  = { 0.5 \c__ecut_baseline_skip },
-      },  % 三级标题 黑体小4号
+      },  % 三级标题 黑体 4号
     paragraph      =
       {
         format     = { \heiti \zihao { -4 }       },
@@ -341,7 +344,7 @@
 \renewcommand{\cftfigpresnum}{图}
 \renewcommand{\cfttabpresnum}{表}
 \newlength{\mylen}
-\settowidth{\mylen}{\cftfigpresnum\cftfigaftersnum}
+\settowidth{\mylen}{\cftfigpresnum\cftfigaftersnum\quad}
 \addtolength{\cftfignumwidth}{\mylen}
 \addtolength{\cfttabnumwidth}{\mylen}
 
@@ -356,8 +359,11 @@
     \tl_if_eq:NnF \g__ecut_option_type_tl { doctor }
       { \tl_set:cn  { cft #1 page font } { \zihao { 5 } } }
 
-    \dim_set:cn { cft #1 indent } { \parindent }
+    %\dim_set:cn { cft #1 indent } { \parindent }
   }
+
+% \setlength{\cftsubsecindent}{ \parindent }
+% \setlength{\cftsubsubsecindent}{ \parindent }
 
 \dim_zero:N \cftfigindent
 \dim_zero:N \cfttabindent
@@ -380,13 +386,19 @@
 %%% ---- 图表标题 ----- %%%
 \RequirePackage { subcaption }
 % 图表标题设置
-\RequirePackage [ labelsep = quad ] { caption } % 序号之后空一格写标题
-\RequirePackage { bicaption }
+\RequirePackage [labelsep=quad] { caption } % 序号之后空一格写标题
+\RequirePackage[list = off] { bicaption }[2020/10/25 v1.3] % 双语图表标题， list = off 设置图表目录中只显示第一种语言的标题内容
+\captionsetup[bi-second]{listtype+=Eng}
+\captionsetup[figure][bi-second]{name=Figure} %设置图的英文编号前缀
+\captionsetup[table][bi-second]{name=Table} %设置表的英文编号前缀
+\RequirePackage { newfloat }
+\DeclareFloatingEnvironment[fileext=lof2]{figureEng}[Figure][List\ of\ Figures]
+\DeclareFloatingEnvironment[fileext=lot2]{tableEng}[Table][List\ of\ Tables]
 % 设置表格标题字体为黑体, 设置图标题字体为宋体
 \DeclareCaptionFont { ecuttablecap  }
-  { \heiti \addCJKfontfeatures { BoldFont = * } \bfseries \zihao { -4 } }
+  { \heiti \addCJKfontfeatures { BoldFont = * } \bfseries \zihao { 5 } }
 \DeclareCaptionFont { ecutfigurecap }
-  { \songti \zihao { -4 } }
+  { \heiti \addCJKfontfeatures { BoldFont = * } \bfseries \zihao { 5 } }
 \captionsetup [ table ]
   {
     name = 表,
@@ -398,8 +410,7 @@
     font = ecutfigurecap
   }
 
-\captionsetup[figure][bi-second]{name=Figure} %设置图的英文编号前缀
-\captionsetup[table][bi-second]{name=Table} %设置表的英文编号前缀
+
 
 \RequirePackage { graphicx }
 \AtEndPreamble
@@ -417,13 +428,13 @@
 
 \RequirePackage
   {
-    longtable,
     xltabular, % 长表格
     booktabs,  % 三线表
     makecell,
     multirow,  % 跨行表格
     diagbox    % 斜线表头
   }
+\RequirePackage{ longtable }[ 2021/05/07 v4.16 ]
 
 \cs_new_protected:Npn \__ecut_set_table_font:
   {
@@ -786,6 +797,7 @@
 \tl_new:N \g__ecut_info_paper_number_tl
 \tl_new:N \g__ecut_info_session_tl
 \tl_new:N \g__ecut_info_category_tl
+\tl_new:N \g__ecut_info_category_en_tl
 \tl_new:N \g__ecut_info_title_tl
 \tl_new:N \g__ecut_info_title_en_tl
 \tl_new:N \g__ecut_info_author_tl
@@ -796,8 +808,10 @@
 \tl_new:N \g__ecut_info_major_tl
 \tl_new:N \g__ecut_info_major_en_tl
 \tl_new:N \g__ecut_info_direction_tl
+\tl_new:N \g__ecut_info_direction_en_tl
 \tl_new:N \g__ecut_info_date_tl
-\tl_new:N \g_ecut_info_advisor_tn_tl
+\tl_new:N \g__ecut_info_advisor_en_tl
+\tl_new:N \g__ecut_info_advisor_outside_tl
 \clist_new:N \g__ecut_info_advisor_clist
 \clist_new:N \g__ecut_info_keywords_clist
 \clist_new:N \g__ecut_info_keywords_en_clist
@@ -811,6 +825,7 @@
     paper-number   .tl_gset:N    = \g__ecut_info_paper_number_tl,
     session        .tl_gset:N    = \g__ecut_info_session_tl,
     category       .tl_gset:N    = \g__ecut_info_category_tl,
+    category*      .tl_gset:N    = \g__ecut_info_category_en_tl,
     student-number .tl_gset:N    = \g__ecut_info_student_number_tl,
     title          .tl_gset:N    = \g__ecut_info_title_tl,
     title *        .tl_gset:N    = \g__ecut_info_title_en_tl,
@@ -821,8 +836,10 @@
     major          .tl_gset:N    = \g__ecut_info_major_tl,
     major*         .tl_gset:N    = \g__ecut_info_major_en_tl,
     direction      .tl_gset:N    = \g__ecut_info_direction_tl,
+    direction*     .tl_gset:N    = \g__ecut_info_direction_en_tl,
     date           .tl_gset:N    = \g__ecut_info_date_tl,
     advisor*       .tl_gset:N    = \g__ecut_info_advisor_en_tl,
+    advisor-outside .tl_gset:N   = \g__ecut_info_advisor_outside_tl,
     advisor        .clist_gset:N = \g__ecut_info_advisor_clist,
     keywords       .clist_gset:N = \g__ecut_info_keywords_clist,
     keywords *     .clist_gset:N = \g__ecut_info_keywords_en_clist,
@@ -1071,9 +1088,9 @@
 \cs_new_protected:Npn \__ecut_make_front_matter_master:
   {
     \__ecut_make_cover_master_doctor:
-    \__ecut_make_title_en:
     \__ecut_make_statesment_master_doctor:
     \__ecut_make_authorization:
+    \__ecut_make_title_en:
 
     \pagestyle { plain }
     \pagenumbering { Roman }
@@ -1176,7 +1193,8 @@
     \__ecut_new_chapter_page:
   }
 
-\cs_new_protected:Npn \__ecut_make_cover_master_doctor:
+
+  \cs_new_protected:Npn \__ecut_make_cover_master_doctor:
   {
     \pagestyle { empty }
     \__ecut_set_baseline_skip:
@@ -1185,22 +1203,7 @@
         \songti \bfseries \zihao { 4 } \mode_leave_vertical:
         \hbox_to_wd:nn { 2 cm } { \__ecut_spread_with:nn { 论文编号： } { \hfill } }
         \hbox_to_wd:nn { 4 cm } { \hfill \g__ecut_info_paper_number_tl \hfill }
-        % \hfill
-        % \hbox_to_wd:nn { 2 cm } { \__ecut_spread_with:nn { 密级 } { \hfill } }
-        % \uline
-        %   {
-        %     \hbox_to_wd:nn { 2 cm }
-        %       { \hfill \g__ecut_info_secret_level_tl \hfill }
-        %   } \par \skip_vertical:n { 1 em } \mode_leave_vertical:
-        % \hbox_to_wd:nn { 2 cm } { \__ecut_spread_with:nn { UDC } { \hfill } }
-        % \uline { \hbox_to_wd:nn { 2 cm } { \hfill \g__ecut_info_udc_tl \hfill } }
-        % \hfill
-        % \hbox_to_wd:nn { 2 cm } { \__ecut_spread_with:nn { 编号 } { \hfill } }
-        % \uline
-        %   {
-        %     \hbox_to_wd:nn { 2 cm }
-        %       { \hfill \g__ecut_info_school_number_tl \hfill }
-        %   }
+        
       \end { minipage }
       \par \skip_vertical:n { 0.5 cm }
       \includegraphics [ width = 12.5 cm ] { data / ecut.png } % width = 5.5 cm
@@ -1253,7 +1256,7 @@
             { \g__ecut_info_author_tl } & \\ \cline{2-2}
             \\ [ -1 em ]
             \__ecut_spread_with:nn { 专业领域 } { \hfill } &
-            { \g__ecut_info_direction_tl } & \\ \cline{2-2}
+            { \g__ecut_info_major_tl } & \\ \cline{2-2}
             \\ [ -1 em ]
             \tl_if_eq:NnTF \g__ecut_option_class_tl { professional }
               {
@@ -1261,10 +1264,10 @@
                 { \g__ecut_info_direction_tl } & \\ \cline{2-2}
                 \\ [ -1 em ]
                 \__ecut_spread_with:nn { 校内导师 } { \hfill } &
-                { \g__ecut_info_major_tl } & \\ \cline{2-2}
+                { \clist_item:Nn \g__ecut_info_advisor_clist {1} } & \\ \cline{2-2}
                 \\ [ -1 em ]
                 \__ecut_spread_with:nn { 校外导师 } { \hfill } &
-                { \g__ecut_info_major_tl } & \\ \cline{2-2}
+                { \g__ecut_info_advisor_outside_tl } & \\ \cline{2-2}
                 \\ [ -1 em ]
               }
               {
@@ -1284,12 +1287,27 @@
 \cs_new_protected:Npn \__ecut_make_title_en:
   {
     \__ecut_new_chapter_page:
+    \pagestyle { empty }
+    \__ecut_set_baseline_skip:
     \begin { center }
-      \zihao { 2 } \g__ecut_info_title_en_tl
+      \skip_vertical:n { 1.5 cm }
+      \includegraphics [ width = 12.5 cm ] { data / ecut.png } % width = 5.5 cm
+      \par \skip_vertical:n { 1.5 cm }
+      { \zihao { 1 } \bfseries \g__ecut_info_category_en_tl }
     \end { center }
+    \par \skip_vertical:n { 2 cm }
+
+    \group_begin:
+      \zihao{3} \setlength{\parindent}{0pt} \skip_set:Nn \baselineskip { 36 pt } 
+      THESIS: \quad \g__ecut_info_title_en_tl \par
+      SPECIALIZATION: \qquad \g__ecut_info_major_en_tl \par
+      RESEARCH DIRECTION: \qquad \g__ecut_info_direction_en_tl \par
+      POSTGRADUATE: \qquad \g__ecut_info_author_en_tl \par
+      MENTOR: \qquad \g__ecut_info_advisor_en_tl\par
+    \group_end:
     \vfill
     \begin { center }
-      \zihao { 4 } \g__ecut_info_author_en_tl
+      \zihao { 4 } \g__ecut_info_date_tl
     \end { center }
     \__ecut_new_chapter_page:
   }
@@ -1411,17 +1429,26 @@
   {
     \__ecut_new_chapter_page:
     \tableofcontents
+    \addcontentsline { toc } { chapter } { \contentsname } % 将目录页本身加入到目录中
     \__ecut_new_chapter_page:
 
     \bool_if:NT \g__ecut_style_list_of_figures_bool
       {
         \listoffigures
+        %\listoffigureEnges % 中英文图表标题分开制作目录
+        \addcontentsline { toc } { chapter } { \listfigurename } % 将图目录的位置信息加入到主目录中
+        
         \__ecut_new_chapter_page:
+        
       }
 
     \bool_if:NT \g__ecut_style_list_of_tables_bool
       {
+        %\renewcommand{\cleardoublepage}{}
+        %\renewcommand{\clearpage}{}
         \listoftables
+        %\listoftableEnges % 中英文图表标题分开制作目录
+        \addcontentsline { toc } { chapter } { \listtablename }
         \__ecut_new_chapter_page:
       }
   }
@@ -1453,14 +1480,14 @@
         \group_end:
 
         \group_begin:
-          \renewcommand{\cleardoublepage}{} % 消除 Abstract 章另起一页
+          \renewcommand{\cleardoublepage}{} % 消除 Abstract 章另起一页的操作
           \renewcommand{\clearpage}{}
           \chapter * { 摘要 }
-          \phantomsection
+          \phantomsection \markboth{摘要}{} % \markboth 用于指定该章页眉显示的内容
           \clist_map_inline:nn { doctor , master }
             {
               \tl_if_eq:NnT \g__ecut_option_type_tl {##1}
-                { \addcontentsline { toc } { chapter } { 摘要 } }
+                { \addcontentsline { toc } { chapter } { 摘要 } } % 把该章加入到目录中去
             }
           \tl_if_eq:NnT \g__ecut_option_type_tl { bachelor }
             { \thispagestyle { empty } }
@@ -1490,8 +1517,8 @@
         \group_begin:
           \renewcommand{\cleardoublepage}{}
           \renewcommand{\clearpage}{}
-          \chapter * { \textbf { ABSTRACT } }
-          \phantomsection
+          \chapter * { ABSTRACT }
+          \phantomsection \markboth{ABSTRACT}{}
           \clist_map_inline:nn { doctor , master }
             {
               \tl_if_eq:NnT \g__ecut_option_type_tl {##1}
@@ -1606,7 +1633,7 @@
     \tl_if_empty:NF \g__ecut_element_achievements_tl
       {
         \chapter * { 在攻读学位期间取得的科研成果 }
-        \phantomsection \markboth{在攻读学位期间取得的科研成果}{}
+        \phantomsection \markboth{在攻读学位期间取得的科研成果}{} % 
         \addcontentsline { toc } { chapter } { 在攻读学位期间取得的科研成果 }
         \tl_if_eq:NnTF \g__ecut_style_bib_style_tl { author-year }
           {
