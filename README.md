@@ -1,7 +1,7 @@
 # 东华理工大学毕业论文 LaTeX 模板
 
 
-本项目为东华理工大学毕业论文 LaTeX 模板，该模板是在[武汉大学毕业论文 LaTeX 模板](https://github.com/whutug/whu-thesis)的基础上修改而来的。目前仅支持专硕论文模板。
+本项目为东华理工大学毕业论文 LaTeX 模板，该模板是在[武汉大学毕业论文 LaTeX 模板](https://github.com/whutug/whu-thesis)的基础上修改而来的。目前仅支持全日制学硕/专硕硕士论文模板。
 
 
 

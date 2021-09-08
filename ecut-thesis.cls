@@ -1255,11 +1255,12 @@
             \__ecut_spread_with:nn { 学位申请人 } { \hfill } &
             { \g__ecut_info_author_tl } & \\ \cline{2-2}
             \\ [ -1 em ]
-            \__ecut_spread_with:nn { 专业领域 } { \hfill } &
-            { \g__ecut_info_major_tl } & \\ \cline{2-2}
-            \\ [ -1 em ]
+            
             \tl_if_eq:NnTF \g__ecut_option_class_tl { professional }
               {
+                \__ecut_spread_with:nn { 专业领域 } { \hfill } &
+                { \g__ecut_info_major_tl } & \\ \cline{2-2}
+                \\ [ -1 em ]
                 \__ecut_spread_with:nn { 研究方向 } { \hfill } &
                 { \g__ecut_info_direction_tl } & \\ \cline{2-2}
                 \\ [ -1 em ]
@@ -1271,8 +1272,15 @@
                 \\ [ -1 em ]
               }
               {
-                \__ecut_spread_with:nn { 专业类别 { （领 } { 域） } } { \hfill }
-                & \g__ecut_info_major_tl & \\ [ 0.5 em ]
+                \__ecut_spread_with:nn { 学科专业 } { \hfill } &
+                { \g__ecut_info_major_tl } & \\ \cline{2-2}
+                \\ [ -1 em ]
+                \__ecut_spread_with:nn { 研究方向 } { \hfill } &
+                { \g__ecut_info_direction_tl } & \\ \cline{2-2}
+                \\ [ -1 em ]
+                \__ecut_spread_with:nn { 指导教师 } { \hfill } &
+                { \clist_item:Nn \g__ecut_info_advisor_clist {1} } & \\ \cline{2-2}
+                \\ [ -1 em ]
               }
           }
         \end { tabular }
